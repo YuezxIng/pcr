@@ -722,7 +722,7 @@ def delete_point_2(input_folder, output_folder, distance_threshold=2.5):
 
 #可视化函数
 def visualize_multiple_pcd(folder_path):
-        # 获取文件夹中的所有 .pcd 文件
+    # 获取文件夹中的所有 .pcd 文件
     pcd_files = [f for f in os.listdir(folder_path) if f.endswith('.pcd')]
     
     if not pcd_files:
@@ -752,14 +752,14 @@ def visualize_multiple_pcd(folder_path):
         print("没有有效的点云。")
         return
 
-    # 使用 Open3D Jupyter 笔记本可视化每个点云
+    # 使用 Open3D Jupyter 笔记本内嵌可视化每个点云
     for pcd_file, point_cloud in point_clouds:
         try:
             print(f"正在可视化点云文件: {pcd_file}")
-            o3d.visualization.draw_geometries([point_cloud], window_name=f"{pcd_file} 查看器",
-                                             width=800, height=800)
+            o3d_jupyter.draw([point_cloud], title=f"{pcd_file} 查看器")
         except Exception as e:
             print(f"可视化点云 {pcd_file} 时出现错误: {e}")
+
 
     """
     # 获取文件夹中的所有 .pcd 文件
