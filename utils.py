@@ -722,6 +722,46 @@ def delete_point_2(input_folder, output_folder, distance_threshold=2.5):
 
 #可视化函数
 def visualize_multiple_pcd(folder_path):
+        # 获取文件夹中的所有 .pcd 文件
+    pcd_files = [f for f in os.listdir(folder_path) if f.endswith('.pcd')]
+    
+    if not pcd_files:
+        print("文件夹中未找到任何 .pcd 文件。")
+        return
+
+    # 创建一个列表来存储点云对象
+    point_clouds = []
+
+    # 遍历文件夹并加载点云
+    for pcd_file in pcd_files:
+        file_path = os.path.join(folder_path, pcd_file)
+        try:
+            point_cloud = o3d.io.read_point_cloud(file_path)
+            if point_cloud.is_empty():
+                print(f"点云文件 {pcd_file} 是空的，跳过。")
+                continue
+            # 为每个点云分配随机颜色
+            color = np.random.rand(3)
+            point_cloud.paint_uniform_color(color)
+            point_clouds.append((pcd_file, point_cloud))
+            print(f"成功加载点云文件: {pcd_file}")
+        except Exception as e:
+            print(f"加载点云文件 {pcd_file} 时出错，错误: {e}")
+
+    if not point_clouds:
+        print("没有有效的点云。")
+        return
+
+    # 使用 Open3D Jupyter 笔记本可视化每个点云
+    for pcd_file, point_cloud in point_clouds:
+        try:
+            print(f"正在可视化点云文件: {pcd_file}")
+            o3d.visualization.draw_geometries([point_cloud], window_name=f"{pcd_file} 查看器",
+                                             width=800, height=800)
+        except Exception as e:
+            print(f"可视化点云 {pcd_file} 时出现错误: {e}")
+
+    """
     # 获取文件夹中的所有 .pcd 文件
     pcd_files = [f for f in os.listdir(folder_path) if f.endswith('.pcd')]
     
@@ -793,3 +833,4 @@ def visualize_multiple_pcd(folder_path):
             print(f"渲染点云 {pcd_file} 时出现错误: {e}")
         finally:
             vis.destroy_window()
+    """
