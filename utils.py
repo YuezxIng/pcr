@@ -8,7 +8,7 @@ import random
 import shutil
 from itertools import combinations
 from shapely.geometry import LineString, Point
-from open3d.visualization import draw as o3d_jupyter_draw
+import open3d.visualization as o3d_jupyter
 def pair_files(input_folder, target_file, output_folder):
     # 获取所有文件的列表
     files = [f for f in os.listdir(input_folder) if os.path.isfile(os.path.join(input_folder, f))]
